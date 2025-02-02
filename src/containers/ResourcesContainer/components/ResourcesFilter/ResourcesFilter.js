@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {ReactComponent as SearchIcon} from '../../../../assets/icons/search.svg';
 import {TextField} from '../../../../components/TextField/TextField';
 import {inputBackgroundColor} from '../../../../styles/colors';
+import { useLazyTranslation } from '../../../../services/useLazyTranslation';
 
 const FilterFieldContainer = styled.div`
   display: flex;
@@ -36,14 +37,15 @@ const StyledSearchIcon = styled(SearchIcon)`
 `;
 
 export default function ResourcesFilter({onChange, value}) {
-  const {t} = global;
+  const {t} = useLazyTranslation('ResourcesFilter');
+  
     return (
         <FilterFieldContainer>
             <StyledTextField {...{
                 onChange,
                 value,
                 readOnly: false,
-                placeholder: t('RESROUCE_FILTER_PLACEHOLDER'),
+                placeholder: t('PLACEHOLDER'),
                 spellCheck: 'false'
             }} />
             <StyledSearchIcon/>
