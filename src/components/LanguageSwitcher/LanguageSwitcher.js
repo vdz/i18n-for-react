@@ -27,8 +27,8 @@ const LanguageButton = styled.button`
         color: #000;
     }
 `;
-
-
+// Simple language switcher, that will cause i18n on 'languageChanged' event to be triggered.
+// We have event handlers registered with our translated components to load new strings if language changes.
 export default function LanguageSwitcher() {
     const {language} = useLanguageSwitcher();
 

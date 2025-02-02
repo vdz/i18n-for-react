@@ -38,6 +38,8 @@ const StyledSearchIcon = styled(SearchIcon)`
 
 export default function ResourcesFilter({onChange, value}) {
   const {t} = useLazyTranslation('Resources.ResourcesFilter');
+
+  // No handling for language loading state, but can come see, see DetailsView.js for an example.
   
     return (
         <FilterFieldContainer>

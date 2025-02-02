@@ -6,6 +6,7 @@ import i18n from 'i18next';
 export const init = ({lang}) => {
     return new Promise(async (resolve, reject) => {
 
+        // language defaults
         const response = await fetch(`/locales/${lang}/strings.json`);
         const translation = await response.json();
 

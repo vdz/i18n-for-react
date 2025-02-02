@@ -40,6 +40,7 @@ export default function DetailsView({resource}) {
     const {t, isLangLoading} = useLazyTranslation('Resources.DetailsView');
     const {name, description, resourceType, path} = resource;
 
+    // Just an example of managing language loading.
     if (isLangLoading)
         return (
             <WidgetContainer>
