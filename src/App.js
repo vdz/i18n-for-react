@@ -5,6 +5,8 @@ import HeaderPanel from './components/HeaderPanel/HeaderPanel';
 import {GlobalStyle} from './styles/appDefaultStyles';
 import ResourcesContainer from './containers/ResourcesContainer/ResourcesContainer';
 import {headerPanelHeight, VerticalContainer} from './styles/commonStyles';
+import LanguageProvider from './services/LanguageProvider';
+
 
 const ApplicationContainer = styled(VerticalContainer)`
     min-height: calc(100vh - ${headerPanelHeight});
@@ -19,10 +21,11 @@ const MainContainer = styled.main`
 
 function App() {
     const [initCompleted, setInitCompleted] = useState(false);
+    const [language, setLanguage] = useState('en-US');
 
     useEffect(() => {
         const init = async () => {
-            await initTranslation({lang: 'en-US'});
+            await initTranslation({lang: language});
             setInitCompleted(true);
         };
         init();
@@ -34,12 +37,14 @@ function App() {
     return (
         <Suspense fallback={null}>
             <GlobalStyle/>
-            <ApplicationContainer>
-                <HeaderPanel/>
-                <MainContainer>
+            <LanguageProvider>
+                <ApplicationContainer>
+                    <HeaderPanel/>
+                    <MainContainer>
                     <ResourcesContainer/>
-                </MainContainer>
-            </ApplicationContainer>
+                    </MainContainer>
+                </ApplicationContainer>
+            </LanguageProvider>
         </Suspense>
     );
 }

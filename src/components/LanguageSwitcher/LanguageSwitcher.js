@@ -1,5 +1,4 @@
-import { useLanguageSwitcher } from '../../services/useLanguageSwitcher';
-import { changeLanguage } from '../../services/translation';
+import { useLanguage } from '../../services/LanguageProvider';
 import styled from 'styled-components';
 
 
@@ -30,7 +29,7 @@ const LanguageButton = styled.button`
 // Simple language switcher, that will cause i18n on 'languageChanged' event to be triggered.
 // We have event handlers registered with our translated components to load new strings if language changes.
 export default function LanguageSwitcher() {
-    const {language} = useLanguageSwitcher();
+    const { language, changeLanguage } = useLanguage();
 
     return (
         <LanguageSwitcherContainer>

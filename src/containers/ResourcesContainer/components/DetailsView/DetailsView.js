@@ -6,6 +6,8 @@ import {TextField} from '../../../../components/TextField/TextField';
 import {VerticalContainer} from '../../../../styles/commonStyles';
 import styled from 'styled-components';
 import { useLazyTranslation } from '../../../../services/useLazyTranslation';
+import { useTranslation } from 'react-i18next';
+
 const WidgetContainer = styled(VerticalContainer)`
   min-height: 100%;
   background-color: white;
@@ -36,12 +38,14 @@ const Loading = styled.div`
     flex-grow: 1;
 `;
 
+
 export default function DetailsView({resource}) {
-    const {t, isLangLoading} = useLazyTranslation('Resources.DetailsView');
+    const isTranslationsLoaded = useLazyTranslation('Resources.DetailsView');
+    const {t} = useTranslation('Resources.DetailsView');
     const {name, description, resourceType, path} = resource;
 
     // Just an example of managing language loading.
-    if (isLangLoading)
+    if (!isTranslationsLoaded)
         return (
             <WidgetContainer>
                 <Loading>Loading language...</Loading>

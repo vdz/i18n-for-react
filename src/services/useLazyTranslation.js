@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react';
 import i18n from 'i18next';
+import { useLanguage } from './LanguageProvider';
+
 export function useLazyTranslation(namespace) {
-    const [isLangLoading, setIsLangLoading] = useState(true);
-    // create a local translations state to avoid re-fetching the translations for the same language
-    const [translations, setTranslations] = useState({});
-    const [lang, setLang] = useState(i18n.language);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const { language } = useLanguage();
 
     useEffect(() => {
         const fetchLocales = async () => {
-            setIsLangLoading(true);
-            try {
-                // if resource was not already loaded and added with a unique namespace, use it
-                if (!i18n.hasResourceBundle(i18n.language, namespace)) {
-              
+            setIsLoaded(false);
+            // if resource was not already loaded and added with a unique namespace, use it
+            if (!i18n.hasResourceBundle(language, namespace)) {
+                try {
                     // We are going to extend the namespace for the sake further extensibility
                     // If "Resources.DetailsView" is passed, it will be translated to:
                     // "containers/ResourcesContainer/components/DetailsView/locales/en/strings.json"
@@ -26,43 +25,42 @@ export function useLazyTranslation(namespace) {
                     const resources = await import(
                         /* webpackInclude: /\.json$/ */
                         /* webpackMode: "lazy" */
-                        `../${container ? `containers/${container}Container/` : ''}components/${component}/locales/${i18n.language}/strings.json` 
+                        `../${container ? `containers/${container}Container/` : ''}components/${component}/locales/${language}/strings.json` 
                         // like so: 
                         // buildImportPath({container, component, lang: i18n.language})
                     );
-                    i18n.addResourceBundle(i18n.language, namespace, resources.default);
+                    i18n.addResourceBundle(language, namespace, resources.default);
+                } catch (error) {
+                    console.error(`Error loading ${namespace} translations for language ${language}:`, error);
                 }
-
-                setTranslations(i18n.getResourceBundle(i18n.language, namespace) ?? {});
-             } catch (error) {
-                console.error(`Error loading ${namespace} translations for language ${i18n.language}:`, error);
-            } finally {
-                setIsLangLoading(false); // Finish loading
             }
+            setIsLoaded(true); // Finish loading
         };
 
         fetchLocales();
-
-        // manage language change notification using i18n to be listened to in other react components
-        // can be recoded using i18nextreact.
-        i18n.on('languageChanged', handleLanguageChange);
-        return () => {
-            i18n.off('languageChanged', handleLanguageChange);
-        };
-
-        function handleLanguageChange(lang) {
-            setLang(lang);
-        }
-    }, [namespace, lang]);  // the lang dependency will be responsible for re-fetching the translations for the new language
+    }, [namespace, language]);  // the lang dependency will be responsible for re-fetching the translations for the new language
     
-    return {
-        t: (key) => translations[key] ?? key, // fallback to key if no translation is found, 
-                                              // can add basic i18n.t here as a fallback as well
-                                              // i18n.t(key) ?? key or i18n.getFixedT(i18n.language, namespace)(key) ?? key
-        isLangLoading
-    };
+    return isLoaded;
 }
     
+// Helper to get component namespace from stack trace
+const getComponentNamespace = () => {
+    const stack = new Error().stack;
+    const callerLine = stack.split('\n')[3]; // Get caller component path
+    console.log('callerLine', stack);
+    // Extract component path and convert to namespace
+    const match = callerLine.match(/(?:\/src\/)(.*?)\.(jsx?|tsx?):/);
+    console.log('match', match);
+    if (match) {
+      return match[1]
+        .replace(/\//g, '.') // Convert path separators to dots
+        .replace(/\.(jsx?|tsx?)$/, ''); // Remove file extension
+    }
+    
+    console.warn('Could not determine component namespace automatically');
+    return null;
+  };
+
 function translateNamespace(namespace) {
     const parts = namespace.split('.');
     if (parts.length === 1) {
