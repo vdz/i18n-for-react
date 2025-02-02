@@ -1,3 +1,12 @@
+# Solution
+
+Please see the attached solution and consider the following:
+1. My approach was to combine namespacing feature of i18next with the lazy loading of locales.
+2. I'd decided to make the least possible footprint on the codebase, not installing any new dependencies, rather implementing some stuff manually when, say `i18nextreact` library could save me some lines of code. This is what I understand you'd rather see as well. So I used i18next events to help manage reactivity.
+3. I'd added a slightly more complexed namespacing logic for Components' locales: '<Container>.<Component>', but it works with just '<Component>' as well.
+
+Installation instructions follow.
+
 # Install
 
 1. run **npm install**
