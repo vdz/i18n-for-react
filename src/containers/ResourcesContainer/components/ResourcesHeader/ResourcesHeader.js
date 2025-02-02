@@ -8,7 +8,7 @@ const ResourceHeaderText = styled(HeaderText)`
 `;
 
 export default function ResourcesHeader() {
-    const {t} = useLazyTranslation('ResourcesHeader');
+    const {t} = useLazyTranslation('Resources.ResourcesHeader');
 
     return (
         <>

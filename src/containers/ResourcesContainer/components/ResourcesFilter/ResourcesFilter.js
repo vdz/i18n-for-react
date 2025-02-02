@@ -37,7 +37,7 @@ const StyledSearchIcon = styled(SearchIcon)`
 `;
 
 export default function ResourcesFilter({onChange, value}) {
-  const {t} = useLazyTranslation('ResourcesFilter');
+  const {t} = useLazyTranslation('Resources.ResourcesFilter');
   
     return (
         <FilterFieldContainer>
