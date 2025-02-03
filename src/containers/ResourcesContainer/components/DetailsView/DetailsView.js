@@ -7,6 +7,7 @@ import {VerticalContainer} from '../../../../styles/commonStyles';
 import styled from 'styled-components';
 import { useLazyTranslation } from '../../../../services/useLazyTranslation';
 import { useTranslation } from 'react-i18next';
+import { getNamespace } from '../../../../services/getNamespace';
 
 const WidgetContainer = styled(VerticalContainer)`
   min-height: 100%;
@@ -38,10 +39,10 @@ const Loading = styled.div`
     flex-grow: 1;
 `;
 
-
 export default function DetailsView({resource}) {
-    const isTranslationsLoaded = useLazyTranslation('Resources.DetailsView');
-    const {t} = useTranslation('Resources.DetailsView');
+    const namespace = getNamespace(import.meta.url);
+    const isTranslationsLoaded = useLazyTranslation(namespace);
+    const {t} = useTranslation(namespace);
     const {name, description, resourceType, path} = resource;
 
     // Just an example of managing language loading.

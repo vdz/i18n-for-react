@@ -1,3 +1,8 @@
+# Addendum
+I've addressed the rigidly defined and opinionated `useLazyTranslation` hook, and added a fully automatic namespaceing solution.
+
+I have also added a simple `LanguageProvider` for managing language state among its children, for simpler language control.
+
 # Solution
 
 Please see the attached solution and consider the following:

@@ -6,6 +6,7 @@ import {TextField} from '../../../../components/TextField/TextField';
 import {inputBackgroundColor} from '../../../../styles/colors';
 import { useLazyTranslation } from '../../../../services/useLazyTranslation';
 import { useTranslation } from 'react-i18next';
+import { getNamespace } from '../../../../services/getNamespace';
 
 const FilterFieldContainer = styled.div`
   display: flex;
@@ -38,8 +39,9 @@ const StyledSearchIcon = styled(SearchIcon)`
 `;
 
 export default function ResourcesFilter({onChange, value}) {
-  const isTranslationsLoaded = useLazyTranslation('Resources.ResourcesFilter');
-  const {t} = useTranslation('Resources.ResourcesFilter');
+  const namespace = getNamespace(import.meta.url);
+  const isTranslationsLoaded = useLazyTranslation(namespace);
+  const {t} = useTranslation(namespace);
 
   // No handling for language loading state, but can come see, see DetailsView.js for an example.
   
